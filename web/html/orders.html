@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>订单管理</title>
+	<!-- 引入样式文件，你可能需要根据实际情况调整样式文件的路径 -->
+	<link rel="stylesheet" href="css/customer_order.css">
+</head>
+<body>
+
+<!-- 顾客点单表单 -->
+<form action="/order?type=Customer_order" method="post" enctype="multipart/form-data" class="order-form">
+	<h2>顾客点单</h2>
+
+	<div class="row">
+		<label for="OrderID">订单ID:</label>
+		<input type="text" id="OrderID" name="OrderID" required>
+	</div>
+
+	<div class="row">
+		<label for="CustomerID">顾客ID:</label>
+		<input type="text" id="CustomerID" name="CustomerID" required>
+	</div>
+
+	<div class="row">
+		<label for="OrderDate">订单日期:</label>
+		<input type="date" id="OrderDate" name="OrderDate" required>
+	</div>
+
+	<div class="row">
+		<label for="Quantity">数量:</label>
+		<input type="text" id="Quantity" name="Quantity" required>
+	</div>
+
+	<div class="row">
+		<label for="TotalPrice">总价:</label>
+		<input type="text" id="TotalPrice" name="TotalPrice" required>
+	</div>
+
+	<div class="row">
+		<label for="OrderIsDeleat">订单是否删除:</label>
+		<select id="OrderIsDeleat" name="OrderIsDeleat">
+			<option value="true">是</option>
+			<option value="false" selected>否</option>
+		</select>
+	</div>
+
+	<div class="row">
+		<label for="CustomerIName">顾客姓名:</label>
+		<input type="text" id="CustomerIName" name="CustomerIName" required>
+	</div>
+
+	<div class="row">
+		<label for="CustomerTelephone">顾客电话:</label>
+		<input type="tel" id="CustomerTelephone" name="CustomerTelephone" required>
+	</div>
+
+	<div class="row">
+		<label for="CustomerEmail">顾客邮箱:</label>
+		<input type="email" id="CustomerEmail" name="CustomerEmail" required>
+	</div>
+
+	<button type="submit" class="submit-btn">提交订单</button>
+</form>
+
+
+<!-- 配送订单表单，你可以根据需要添加相关内容 -->
+
+<!-- 添加一个按钮来查看订单 -->
+<button onclick="getAllOrders()" class="view-orders-btn">查看订单</button>
+<!-- 用于显示订单列表的div -->
+<div id="orderListContainer"></div>
+
+<script>
+	function submitCustomerOrder() {
+		// 收集表单数据
+		var formData = new FormData(document.getElementById('customerOrderForm'));
+
+		// 发送数据到后端Servlet
+		fetch('/order?type=Customer_order', {
+			method: 'POST',
+			body: formData
+		})
+				.then(response => response.json())
+				.then(data => {
+					// 处理后端返回的数据
+					if (data.code === 200) {
+						alert('订单提交成功！');
+						// 在成功提交后跳转到指定页面
+						window.location.href = '/success_page.html';
+					} else {
+						alert('订单提交失败：' + data.data);
+					}
+				})
+				.catch(error => {
+					console.error('发生错误:', error);
+				});
+	}
+
+	function getAllOrders() {
+		// 发送请求到后端Servlet
+		fetch('/orders?type=find_orders', {
+			method: 'GET'
+		})
+				.then(response => response.json())
+				.then(data => {
+					// 处理后端返回的数据
+					if (data.code === 200) {
+						// 清空之前的订单信息
+						document.getElementById('orderListContainer').innerHTML = '';
+						// 遍历订单数据并显示在页面上
+						data.data.forEach(order => {
+							// 创建订单信息的DOM元素
+							const orderElement = document.createElement('div');
+							orderElement.textContent =
+									`订单ID: ${order.orderId}, 顾客ID: ${order.customerId}, 订单日期: ${order.orderDate}, 数量: ${order.quantity}, 总价: ${order.totalPrice}`;
+							// 将订单信息添加到页面上
+							document.getElementById('orderListContainer').appendChild(orderElement);
+						});
+					} else {
+						console.error('获取订单数据失败:', data.data);
+					}
+				})
+				.catch(error => {
+					console.error('发生错误:', error);
+				});
+	}
+</script>
+</body>
+</html>

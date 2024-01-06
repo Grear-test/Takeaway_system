@@ -1,0 +1,119 @@
+
+.top{
+    height: 50px;
+    background-color: #fed61b;
+}
+.meituanlogo{
+    position: relative;
+    left: 250px;
+    top: 5px;
+}
+
+.search{
+    position: relative;
+    left: 400px;
+    top: -41px;
+    width: 422px;
+    height: 46px;
+    margin-left: 100px;
+    background-image: url("./images/header.png");
+    background-repeat: no-repeat;
+    background-position-y: -31px;
+}
+#shopname{
+    background-color: transparent;
+    border: none;
+    outline: none;
+    margin-top: 3px;
+    margin-left: 30px;
+}
+#search_button{
+    background-color: transparent;
+    border: none;
+    margin-left: 130px;
+    font-size: 20px;
+    color: #8c8c8c;
+    font-family: 宋体;
+}
+.shop{
+    width: 1100px;
+    text-align: center;
+    margin: 20px auto;
+}
+#myshop{
+    text-decoration: none;
+    color: #130ffd;
+    font-weight: 600;
+}
+#shop_num{
+    color: red;
+}
+
+/* 点餐页面 */
+#meal{
+    width: 1100px;
+    height: 680px;
+    margin: 20px auto;
+    background-color: cornsilk;
+    display: block;
+}
+#meal hr{
+    color: #ffffff;
+    clear: left;
+}
+.food{
+    width: 22%;
+    height: 300px;
+    float: left;
+    margin: 1%;
+    padding: 5px;
+}
+.foodinformation p{
+    text-align: right;
+    color: #fed61b;
+    font-size: 15px;
+} 
+.foodprice{
+    float: right;
+}
+.addshop{
+    float: right;
+    margin-top: 10px;
+}
+.delivery{
+    padding: 0 25px;
+}
+
+/* 结算页面 */
+#pay{
+    width: 1100px;
+    height: 680px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: white;
+    display: none;
+}
+#pay_inf{
+    width: 100%;
+    border-collapse: collapse;
+    border-bottom: 2px solid rgb(235, 233, 233);
+    text-align: center;
+}
+#pay_inf th{
+    width: 20%;
+    background-color: #B5E0FF;
+}
+#shop_pro{
+    color: red;
+    text-align: center;
+}
+#mange_shop{
+    display: none;
+    justify-content: space-between;
+}
+#mange_shop div:last-child{
+    color: red;
+}
+#mange_shop div:last-child>button{
+    background-color: #fed61b;
+}

@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>搜索界面</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      background-image: url('../img/shanshui.jpg');
+      background-size: cover; /* 保持背景图片覆盖整个页面 */
+      background-repeat: no-repeat; /* 禁止背景图片重复 */
+      background-position: center; /* 将背景图片居中 */
+      margin: 0;
+      padding: 0;
+    }
+
+    h1 {
+      color: #333;
+      text-align: center;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 10px;
+    }
+
+    #searchContainer {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+
+    #searchInput {
+      padding: 8px;
+      width: 200px;
+      margin-right: 10px;
+    }
+
+    button {
+      padding: 8px;
+      cursor: pointer;
+      background-color: #007bff;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+    }
+
+    #searchResult {
+      margin-top: 20px;
+      text-align: center;
+    }
+
+    p {
+      margin: 5px 0;
+    }
+
+    p.error {
+      color: red;
+    }
+
+    img {
+      max-width: 100%;
+      height: auto;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+<h1>搜索</h1>
+<div id="searchContainer">
+  <label for="searchInput">搜索内容：</label>
+  <input type="text" id="searchInput" placeholder="输入搜索内容">
+  <button onclick="sendSearch('all')">搜索全部</button>
+  <button onclick="sendSearch('findById')">按ID搜索</button>
+  <button onclick="sendSearch('findByName')">按名称搜索</button>
+</div>
+<div id="searchResult"></div>
+<script>
+  function sendSearch(type) {
+    // 获取输入框中的数据
+    var searchData = document.getElementById("searchInput").value;
+
+    // 创建XMLHttpRequest对象
+    var xhr = new XMLHttpRequest();
+
+    // 配置请求
+    var url = '/search?type=' + type + '&DishName=' + searchData;
+    xhr.open('GET', url, true);
+    xhr.setRequestHeader('Content-Type', 'application/json');
+
+    // 监听请求状态变化
+    xhr.onreadystatechange = function() {
+      if (xhr.readyState === XMLHttpRequest.DONE) {
+        // 请求完成
+        if (xhr.status === 200) {
+          // 请求成功
+          var data = JSON.parse(xhr.responseText);
+          displaySearchResult(data.data);
+        } else {
+          // 请求失败
+          displayErrorMessage("搜索失败");
+        }
+      }
+    };
+
+    // 发送请求
+    xhr.send();
+  }
+
+  function displaySearchResult(results) {
+    var resultDiv = document.getElementById("searchResult");
+    // 清空之前的结果
+    resultDiv.innerHTML = "";
+
+    if (results && results.length > 0) {
+      // 处理搜索结果的展示，可以根据具体情况进行定制
+      resultDiv.innerHTML = "<p>搜索结果：</p>";
+
+      for (var i = 0; i < results.length; i++) {
+        var result = results[i];
+        // 这里可以根据搜索结果的数据结构进行展示
+        resultDiv.innerHTML += "<div>";
+        resultDiv.innerHTML += "<p>ID: " + result.DishID + "</p>";
+        resultDiv.innerHTML += "<p>Name: " + result.DishName + "</p>";
+        resultDiv.innerHTML += "<img src='" + result.image_url + "' alt='" + result.DishName +
+                "' width='350px'>";
+        resultDiv.innerHTML += "</div>";
+      }
+    } else {
+      displayErrorMessage("未找到匹配结果");
+    }
+  }
+
+
+  function displayErrorMessage(message) {
+    var resultDiv = document.getElementById("searchResult");
+    // 清空之前的结果
+    resultDiv.innerHTML = "";
+    resultDiv.innerHTML = "<p style='color: red;'>" + message + "</p>";
+  }
+</script>
+</body>
+</html>

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Shortest Path on Map</title>
+    <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places"></script>
+    <script>
+        function initMap() {
+            var map = new google.maps.Map(document.getElementById('map'), {
+                center: {lat: -34.397, lng: 150.644},
+                zoom: 8
+            });
+
+            // 起点和终点坐标
+            var startPoint = new google.maps.LatLng(-34.397, 150.644);
+            var endPoint = new google.maps.LatLng(-34.0, 151.0);
+
+            // 创建路径请求对象
+            var directionsService = new google.maps.DirectionsService();
+
+            // 创建路径显示对象
+            var directionsDisplay = new google.maps.DirectionsRenderer();
+            directionsDisplay.setMap(map);
+
+            // 构造路径请求
+            var request = {
+                origin: startPoint,
+                destination: endPoint,
+                travelMode: 'DRIVING'  // 选择出行方式，如驾车
+            };
+
+            // 发起路径请求
+            directionsService.route(request, function(result, status) {
+                if (status == 'OK') {
+                    // 在地图上显示路径
+                    directionsDisplay.setDirections(result);
+                }
+            });
+        }
+    </script>
+</head>
+<body>
+<div id="map" style="height: 400px;"></div>
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap"></script>
+</body>
+</html>
